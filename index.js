@@ -34,8 +34,27 @@ class Player {
         else this.velocity.y = 0
         
     }
+} 
+
+class Platform {
+    constructor() {
+        this.position = {
+            x:200,
+            y:100
+        }
+        this.width = 200
+        this.height = 20
+    }
+    draw() {
+        c.fillStyle = 'black'
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
 }
+
+
 const player = new Player()
+const platform = new Platform()
+
 const keys = {
     right: {pressed: false },
     left: {pressed: false}
@@ -46,6 +65,7 @@ function animate() {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height )
     player.update()
+    platform.draw()
 
     if (keys.right.pressed) {
         player.velocity.x = 5
@@ -54,6 +74,11 @@ function animate() {
         player.velocity.x = -5
     } 
     else player.velocity.x = 0
+
+    if(player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && 
+        player.position.x + player.width >= platform.position.x) {
+        player.velocity.y = 0
+    }
 }
 animate()
 
@@ -66,7 +91,7 @@ window.addEventListener('keydown', ({ keyCode })=> {console.log(keyCode)
         case 83: console.log('down') 
         break
         case 87: console.log('up') 
-        player.velocity.y -= 10
+        player.velocity.y -= 20
         break
         case 68: console.log('right') 
         keys.right.pressed = true
